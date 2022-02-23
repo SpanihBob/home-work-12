@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>дз-13</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+<h3>
+Задание 1 <br>
+Создать html-страницу со списком сообщений на форуме и
+формой для добавления нового сообщения. После заполнения
+формы добавить сообщение к списку на экране.
+</h3>
+<div id="taskOneDiv">
+    <div class="newMessage">
+        <div class="dateAndName">
+            <div id="newName">name</div>
+            <div class="publicationDate">12:23:34   12/12/2021</div>
+        </div>
+        <hr>
+        <div class="messageEntry">
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quis sequi eius reiciendis eaque officia quisquam. Doloremque eligendi repudiandae amet quibusdam vel nisi ea! Optio blanditiis necessitatibus dolorem ipsa reprehenderit minus.
+        </div>
+    </div>
+</div>
+
+<div id="temporaryStorageText"></div>                                                   <!-- временное хранилище для файлов -->               
+<div id="temporaryStorageTextarea"></div>
+
+<form id="taskOneForm" action='' method='POST'>                                                        
+    <h4 class="taskOneH4">Add new message</h4>
+    <label class="taskOneLabel" for=""><p class="taskOneP"><b>Your name</b></p>
+        <input type="text" onkeyup="textInput()" name="taskOneInput" id="taskOneInput">
+    </label>
+    <br>
+    <label class="taskOneLabel" for=""><p class="taskOneP"><b>Your message</b></p>
+        <textarea onkeyup="textareaInput()" name="taskOnetext" id="taskOnetext" cols="30" rows="10"></textarea>
+    </label>
+    <br>
+    <input type='submit' value='Send' id="taskOneSubmit" onclick="sendAMessage()">
+</form>
+
+<script>
+    function textInput() {
+        document.getElementById('temporaryStorageText').textContent = taskOneInput.value;  //функция ввода текста из input в div id="temporaryStorageText"
+    }
+    function textareaInput() {
+        document.getElementById('temporaryStorageTextarea').textContent = taskOnetext.value;  //функция ввода текста из textarea в div id="temporaryStorageTextArea"
+    }
+    function sendAMessage() {
+        event.preventDefault();                                                          //отменяем действие по умолчанию для submit
+        let name = document.getElementById('temporaryStorageText').textContent;          //получаем имя
+        let message = document.getElementById('temporaryStorageTextarea').textContent;   //получаем сообщение
+        let dateNow = new Date(); 
+        let yea = dateNow.getFullYear(); 
+        let mon = dateNow.getMonth();
+        let day = dateNow.getDate(); 
+        let hou = dateNow.getHours(); 
+        let min = dateNow.getMinutes();
+        let sec = dateNow.getSeconds();
+        let date = `${hou}:${min}:${sec}   ${day}/${mon}/${yea}`;                       //вывод даты                                 //получаем дату
+        let newDiv = document.createElement('div');
+        newDiv.innerHTML = `<div class="newMessage"><div class="dateAndName"><div>` + name + `</div>` +                             //формируем данные для вывода на экран
+        `<div class="publicationDate">` + date + `</div></div><hr><div class="messageEntry">` + message + `</div></div>`;
+        let parentDiv = document.getElementById('taskOneDiv');                                                                      //находим div в который будем добавлять сообщения
+        parentDiv.append(newDiv);                                                                                                   //вставляем новый блок в родительский блок
+        taskOneInput.value = '';                    //очищаем поле ввода input
+        taskOnetext.value = '';                     //очищаем поле ввода textarea
+    }
+</script>
+
+<h3>
+Задание 2 <br>
+Создать html-страницу для прохождения теста. Вопросы теста
+имеют два варианта ответа (только 1 правильный). После прохож-
+дения теста, вывести количество правильных ответов.
+</h3>
+
+<div id="taskTwoDiv">
+</div>
+<script>
+    let right = 0;                              //счетчик правильных ответов
+    let counter = 0;                            //счетчик элементов массива
+    let taskTwoQuestions = [                    //массив обьектов с вопросами
+      { Question: "1) How many letters are there in the word 'Hello'?", Answer1: 5, Answer2: 2, Button: "Next", CorrectAnswers: 5},
+      { Question: "1) How many letters are there in the word 'World'?", Answer1: 4, Answer2: 5, Button: "Finish", CorrectAnswers: 5}
+    ];
+    function getQuestions(){                    //функция вывода вопроса
+        let newDiv = document.createElement('div');                             //создаем новый div и добавляем в него код из массива обьектов
+        newDiv.innerHTML = `<form action="" method="POST">                      
+            <p>${taskTwoQuestions[counter].Question}</p>
+            <label for="radioQuestionOne1" onclick="rightChoice()" id="labelQuestionOne1">
+                <input type="radio" name="radioQuestion1" id="radioQuestionOne1">${taskTwoQuestions[counter].Answer1}
+            </label>
+            <br>
+            <label for="radioQuestionOne2" onclick="rightChoice()" id="labelQuestionOne2">
+                <input type="radio" name="radioQuestion1" id="radioQuestionOne2">${taskTwoQuestions[counter].Answer2}
+            </label>
+            <br>
+            <input type="submit" onclick="next()" value="${taskTwoQuestions[counter].Button}" id="buttonQuestion" class="taskTwoButton">
+        </form>`;
+        let parentDiv = document.getElementById('taskTwoDiv');              //находим родителя по id
+        parentDiv.append(newDiv);                                           //вставляем div в родителя
+    }
+    getQuestions();                                                         //вывод функции
+    
+    function rightChoice(){                                     //функция счетчик ответов
+            let radio = event.target.id.replace(/[^\d]/g,'');   //узнаем номер из id при нажатии на input                     
+            let label = document.getElementById(`labelQuestionOne${radio}`).textContent;    //узнаем содержимое ответа пользователя
+            if (label == taskTwoQuestions[counter].CorrectAnswers) {                        //если ответ правильный, увеличиваем счетчик
+                right++;
+            }
+    }
+
+    function next() {                                           //функция вывода следующего вопроса
+        event.preventDefault();                                 //отменяем действие по умолчанию для submit
+        counter++;                                              //счетчик для вывода вопросов из массива обьектов
+        let element = document.getElementById("taskTwoDiv");    //удаляем предыдущий вопрос
+        if (counter==taskTwoQuestions.length) {                 //усли мы дошли до конца массива    
+                let element = document.getElementById("taskTwoDiv");    //удаляем предыдущий вопрос
+                while (element.firstChild) {
+                element.removeChild(element.firstChild);
+                let newDiv = document.createElement('div');
+                newDiv.innerHTML = `правильных ответов ${right}`;     //выводим колличество правильных ответов
+                let parentDiv = document.getElementById('taskTwoDiv');
+                parentDiv.append(newDiv);     
+                return;  
+            }
+        }
+        while (element.firstChild) {                                //удаляем предыдущий вопрос 
+            element.removeChild(element.firstChild);
+        }
+        getQuestions();                                             //выводим следующий вопрос
+    }
+</script>
+
+<h3>
+Задание 3 <br>
+Создать html-страницу с формой для ввода стилизованного
+текста. После заполнения формы, вывести текст на экран в соот-
+ветствии с указанными стилями.
+</h3>
+<div id="taskThreeDiv">
+    <form action="" method="post">
+        <div>
+            <label for="taskThreeCheckbox1" class="taskThreeLabel">
+                <input type="checkbox" name="taskThreeCheckbox1" id="taskThreeCheckbox1" onclick="getStyleTaskThree(0)">Bold
+            </label>
+            <label for="taskThreeCheckbox2" class="taskThreeLabel">
+                <input type="checkbox" name="taskThreeCheckbox2" id="taskThreeCheckbox2" onclick="getStyleTaskThree(1)">Underline
+            </label>
+            <label for="taskThreeCheckbox3" class="taskThreeLabel">
+                <input type="checkbox" name="taskThreeCheckbox3" id="taskThreeCheckbox3" onclick="getStyleTaskThree(2)">Italics
+            </label>
+            <label for="taskThreeRadio1" class="taskThreeLabel">
+                <input type="radio" name="taskThreeRadio" id="taskThreeRadio1" onclick="getStyleTaskThree(3)">Left
+            </label>
+            <label for="taskThreeRadio2" class="taskThreeLabel">
+                <input type="radio" name="taskThreeRadio" id="taskThreeRadio2" onclick="getStyleTaskThree(4)">Right
+            </label>
+            <label for="taskThreeRadio3" class="taskThreeLabel">
+                <input type="radio" name="taskThreeRadio" id="taskThreeRadio3" onclick="getStyleTaskThree(5)">Justify
+            </label>
+        </div>
+        <div>
+            <textarea name="taskThreeTextarea" id="taskThreeTextarea" onkeydown="textareaTaskThreeInput()" cols="30" rows="10"></textarea>
+        </div>
+        <div id="taskThreeInput">            
+        </div>
+        <input type="submit" id="taskThreeButton" value="Show text" onclick="taskThreeGo()">
+    </form>
+</div>
+
+<script>
+    let taskThreeArr = [
+        { Id: 'taskThreeCheckbox1', Style: ['fontWeight', 'bold', 'normal']},
+        { Id: 'taskThreeCheckbox2', Style: ['textDecoration', 'underline', 'none']},
+        { Id: 'taskThreeCheckbox3', Style: ['fontStyle', 'italic', 'normal']},
+        { Id: 'taskThreeRadio1', Style: ['textAlign', 'left', 'center']},
+        { Id: 'taskThreeRadio2', Style: ['textAlign', 'right', 'center']},
+        { Id: 'taskThreeRadio3', Style: ['textAlign', 'justify', 'center']}
+    ];
+    let parentDivTaskThree = document.getElementById('taskThreeInput');     //находим родителя по id
+
+    function textareaTaskThreeInput(){
+        parentDivTaskThree = taskThreeTextarea.value;  //функция ввода текста из textarea в div
+    }
+
+    function getStyleTaskThree(num) {
+        let object = taskThreeArr[num];
+        let stl = object["Style"];        
+        let inp = document.getElementById(`${object["Id"]}`);
+        if (inp.checked) {
+		    parentDivTaskThree.style[stl[0]] = stl[1];                             //меняем стиль html - элемента           
+	    }
+	    else {
+		    parentDivTaskThree.style[stl[0]] = stl[2];                             //меняем стиль html - элемента
+	    }
+    }
+
+    function textareaTaskThreeInput() {
+        parentDivTaskThree.textContent = taskThreeTextarea.value;  //функция ввода текста из input в div id="temporaryStorageText"
+    }
+
+    function taskThreeGo() {
+        event.preventDefault();                                             //отменяем действие по умолчанию для submit
+        let textaria = document.getElementById('taskThreeTextarea');        //находим textarea по id
+        if (window.getComputedStyle(document.querySelector('#taskThreeInput')).display == `none`) {
+            parentDivTaskThree.style = `display: block`;
+            textaria.style = `display: none`;
+        } else if ( window.getComputedStyle(document.querySelector('#taskThreeInput')).display == `block`) {
+            parentDivTaskThree.style = `display: none`;
+                    textaria.style = `display: block`;
+                }
+    }
+</script>
+
+<h3>
+    Задание 4 <br>
+Создать html-страницу для магазина книг.
+Пользователь должен иметь возможность выбрать книгу,
+указать количество экземпляров, ввести свое имя, дату доставки,
+адрес доставки и комментарий.
+После заполнения формы необходимо вывести на экран: «Имя
+покупателя, спасибо за заказ. Такой-то товар будет доставлен в
+такую-то дату по такому-то адресу».
+</h3>
+
+<div  id="taskFourDiv">
+    <div id="bookAndForm">
+        <div id="bookList">             <!-- div для добавления книг -->  
+        </div>  
+
+        <form action="" id="buyerData">
+        <div class="inputContainer">
+            <label for="selectedProduct">Book:</label>
+            <input type="text" id="selectedProduct" name="selectedProduct" disabled>
+        </div>
+        <div class="inputContainer">
+            <label for="quantityOfGoods">Quantity:</label>
+            <input type="text"  id="quantityOfGoods" name="quantityOfGoods">
+        </div>
+        <div class="inputContainer">
+            <label for="buyerName">Name:</label>        
+            <input type="text"  id="buyerName" name="buyerName">
+        </div>
+        <div class="inputContainer">
+            <label for="deliveryAddress">Delivery address:</label>
+            <textarea name="deliveryAddress" id="deliveryAddress" cols="30" rows="10"></textarea>
+        </div>
+        <div class="inputContainer">
+            <label for="deliveryDate">Delivery date:</label>
+            <input type="text"  id="deliveryDate" name="deliveryDate">
+        </div>
+        <div class="inputContainer">
+            <label for="buyerComment">Сomment:</label>           
+            <textarea name="buyerComment" id="buyerComment" cols="30" rows="10"></textarea>
+        </div> 
+        
+            <input type="submit" id="taskFourSubmit" value="Buy">
+        
+        </form>   
+    </div>
+</div>
+
+
+ <script>
+     let book = [                   //массив обьектов с товаром
+         {Img: "img/book1.jpg", Name: "Learning JavaScript: JavaScript Essentials for Modern Application Development", Author: "Ethan Brown", Priсe: "16"},
+         {Img: "img/book2.jpg", Name: "You Don't Know JS: Scope & Closures", Author: "Kyle Simpson", Priсe: "20"},
+         {Img: "img/book3.jpg", Name: "JavaScript & JQuery: Interactive Front-End Web Development", Author: "Jon DucKett", Priсe: "22"},
+     ];
+
+     let kode = '';
+     function startTheProduct() {                       //функция вывода товара на экран из массива обьектов 
+         for(let i = 0; i < book.length; i++) {
+             let object = book[i];
+             kode = kode + `<div id="taskFourbook${i+1}" class="product">
+                                <figure class="taskFourFigure">
+                                    <img src="${object['Img']}" class="taskFourImg" alt="${object['Name']}">
+                                    <figcaption class="taskFourFigcaption">
+                                        <h3 class="taskFourH3">${object['Name']}</h3>
+                                        <p class="taskFourAuthor">${object['Author']}</p>
+                                        <p class="taskFourPrice">${object['Priсe']}$</p>
+                                        <input type="button" class="taskFourSelect" value="Select" id="taskFourSelect${i+1}">
+                                    </figcaption>
+                                </figure>
+                            </div>`    
+         }
+     }
+     startTheProduct();
+    
+     let bookBox = document.getElementById('bookList');    //находим родительский div где находятся товары 
+        bookBox.addEventListener('click', (event) => {
+            let target = event.target; // где был клик?
+            if (target.tagName !== 'INPUT') return
+            else {
+                let theNameOfTheSelectedBook = book[target.id.replace(/[^\d]/g,'') - 1]
+                form.selectedProduct.value = `"${theNameOfTheSelectedBook['Name']}" ${theNameOfTheSelectedBook['Author']}` 
+            }
+        })
+
+     let taskFourBookList = document.getElementById('bookList');        //находим родительский div для вывода товара по id
+     taskFourBookList.innerHTML = kode;                                 //выводим код на страницу
+     let basket = [];                   //создаем массив для хранения даных из формы покупателя;
+     const form = document.getElementById('buyerData')
+        form.addEventListener('submit', (event) => {
+            event.preventDefault()
+            if (form.selectedProduct.value !== '' &&                //если поля заполнены
+                form.quantityOfGoods.value !== '' &&
+                form.deliveryAddress.value !== '' && 
+                form.buyerName.value !== '' &&
+                form.deliveryDate.value !== '' ) {
+                    const newBuyer = {                              //создаем обьект в которыйбудут вводиться данные из формы
+                        Book: form.selectedProduct.value, 
+                        Quantity: form.quantityOfGoods.value,
+                        Name: form.buyerName.value,
+                        DeliveryAddress: form.deliveryAddress.value,
+                        DeliveryDate: form.deliveryDate.value,
+                        Сomment: form.buyerComment.value
+                    };
+                    basket.push(newBuyer);                         //вводим данные из формы в массив
+
+                    let resultDiv = document.createElement('div'); //создаем div для вывода информации о покупке
+                    resultDiv.id = 'taskFourDivResult';
+                    let parentTaskFour = document.getElementById('taskFourDiv'); //находим родительский элемент
+                    parentTaskFour.append(resultDiv);
+
+                    let purchaseResult = document.getElementById('taskFourDivResult');  //находим div для вывода результата
+                    purchaseResult.innerHTML = `<p>${form.buyerName.value}, thanks for the order!</p>
+                                                <p>Book ${form.selectedProduct.value} will be delivered on ${form.deliveryDate.value} to ${form.deliveryAddress.value}</p> `
+                              
+                    form.selectedProduct.value = ''; 
+                    form.quantityOfGoods.value = '';                //очищаем поле ввода
+                    form.buyerName.value = '';
+                    form.deliveryAddress.value = '';
+                    form.deliveryDate.value = '';
+                    form.buyerComment.value = '';               
+                } else alert('не все поля заполнены');
+        })        
+ </script>
+
+<h3> 
+    Задание 5 <br>
+Создать html-страницу с возможностью отмечать присутству-
+ющих на паре. Для начала пользователь выбирает группу и пару,
+дальше вводит тему занятия и отмечает присутствующих. Также
+добавить возможность посмотреть уже отмеченные пары. Хранить
+информацию в заранее подготовленных массивах.
+</h3>
+<div>
+    <form id="taskFiveForm">
+        <div id="taskFiveChildDiv1">
+            <label for="taskFiveGroup">Group:</label>
+            <select name="" id="taskFiveGroup">
+                <option value="">select group</option>
+            </select>
+        </div>
+        <div id="taskFiveChildDiv2">
+            <label for="taskFiveLesson">Lesson:</label>
+            <select name="" id="taskFiveLesson">
+                <option value="">select lesson</option>
+        </select>
+        </div>
+        <input type="submit" id="taskFiveBtn" value="Select">
+    </form>
+    <hr>
+</div>
+<div id="taskFiveDiv"></div>
+
+<script>
+    let theLesson ={};                //проведенные уроки(обьект для вывода информации)
+    let visitReport = {};             //посетившие занятие(обьект для вывода информации)
+    let studentAttendance = [];       //создаем массив для отслеживания посещений занятий
+    let parentDivTaskFive = document.getElementById('taskFiveDiv');
+    let groupCounter = 0;
+    let lessonCounter = 0;
+    let groupTaskFive = [       //создаем массив групп студентов
+        {   
+            st1: 'Авдеев Тимофей Дмитриевич',
+            st2: 'Алексеев Мирон Львович',
+            st3: 'Алексеев Юрий Елисеевич'
+        },
+        {
+            st1: 'Быкова Таисия Демидовна',
+            st2: 'Кузнецова Ксения Ивановна',
+            st3: 'Лукьянов Тимофей Тимофеевич'
+        },
+        {
+            st1: 'Яковлева Маргарита Кирилловна',
+            st2: 'Широкова Варвара Дмитриевна',
+            st3: 'Соловьев Мирослав Богданович'
+        }
+    ];
+
+    let lessonTaskFive = [      //создаем массив с темами
+        'Основы JavaScript',
+        'Объекты: основы',
+        'Продвинутая работа с функциями'
+    ];
+    
+    const selectGroup = document.getElementById('taskFiveGroup');        //находим select для групп
+    groupTaskFive.forEach(element => {
+        groupCounter = groupCounter + 1;                                 //находим сколько групп есть в массиве обьектов
+        let optionGroup = document.createElement('option');              //добавляем в select группы
+        optionGroup.value = `Group ${groupCounter}`;
+        optionGroup.textContent = `Group ${groupCounter}`;
+        selectGroup.append(optionGroup);       
+    });
+
+    const selectLesson = document.getElementById('taskFiveLesson');        //находим select для lesson
+    lessonTaskFive.forEach(element => {
+        lessonCounter = lessonCounter + 1;                                 //находим сколько lesson есть в массиве
+        let optionLesson = document.createElement('option');              //добавляем в select lesson
+        optionLesson.value = `Lesson ${lessonCounter}`;
+        optionLesson.textContent = `Lesson ${lessonCounter}`;
+        selectLesson.append(optionLesson);       
+    });   
+
+    const groupAndLessonSelection = document.getElementById('taskFiveForm');
+    groupAndLessonSelection.addEventListener('submit', (event) => {
+            event.preventDefault();
+            parentDivTaskFive.innerHTML = '';                       //удаляем все содержимое родителя
+            let studentsList = document.createElement('form');      //создаем новую форму
+            studentsList.id = 'taskFiveFormAdded';
+            parentDivTaskFive.append(studentsList);                 //добавляем ее к родительскому div
+            
+            const lessonTopic = document.createElement('div');      //добавляем тему занятия
+            const inputlessonTopic = document.createElement('input');
+            const labellessonTopic = document.createElement('label');
+            lessonTopic.style = 'display: flex';
+            labellessonTopic.textContent = "'Topic'";
+            labellessonTopic.style = 'font-size: 200%; font-weight: 600';
+            inputlessonTopic.style = 'width: 700px; height: 40px';
+            inputlessonTopic.setAttribute('disabled','true');
+            inputlessonTopic.value = lessonTaskFive[groupAndLessonSelection.taskFiveLesson.value.replace(/[^\d]/g,'')-1];
+            if (taskFiveLesson.value.replace(/[^\d]/g,'')==0){return};
+            lessonTopic.append(labellessonTopic, inputlessonTopic);
+            studentsList.append(lessonTopic);
+
+            let present = document.createElement('div');            //список присутствующих
+            let enumerationOfThosePresent = '<div style="display: flex"><div class="studentName">Name</div><div class="studentCheckbox">is present</div></div><hr class="dashed">';
+            if (taskFiveGroup.value.replace(/[^\d]/g,'')==0){return};
+            let groupInWhichTheLessonIsGiven = groupTaskFive[groupAndLessonSelection.taskFiveGroup.value.replace(/[^\d]/g,'')-1];   //находим выбранную группу
+            
+            for(let studentInAGroup = 1; studentInAGroup <= Object.keys(groupInWhichTheLessonIsGiven).length; studentInAGroup++){
+                let oneOfTheGroup = groupInWhichTheLessonIsGiven[`st${studentInAGroup}`];
+                enumerationOfThosePresent = enumerationOfThosePresent + 
+                                            `<div style="display: flex"><div class="studentName">${oneOfTheGroup}</div>
+                                            <div class="studentCheckbox"><input type="checkbox" id="st${studentInAGroup}" name="st${studentInAGroup}" class="markStudent">
+                                            </div></div><hr class="dashed">`;
+            }
+            enumerationOfThosePresent = enumerationOfThosePresent + '<input type="submit" id="taskFiveBtnSave" value="Save"><input type="button" value="Present" id="taskFiveBtnPresent">';
+      
+            present.innerHTML = enumerationOfThosePresent;
+            studentsList.append(present);
+            
+            studentsList.addEventListener('submit', (event) => {                //функция для новой формы нажатие на 'Save'
+                event.preventDefault();
+                let check = document.querySelectorAll('.markStudent');          //находим все checkbox
+                
+                let presentStudents = [];                                           //массив для отметки присутствующих на занятии                                                                             //обьект сщдержит студентовб посетивших занятие                                    
+                let numberGroup = taskFiveGroup.value.replace(/[^\d]/g,'')-1;       //номер группы
+                                                                                    //отчет посещаемости
+                for(let markSt = 0; markSt < check.length; markSt++){                                                   //добавляем в обьект студентов посетивших урок
+                    let studentsFromTheList = groupTaskFive[numberGroup]              
+                    if (studentsList[`st${markSt+1}`].checked) {
+                        presentStudents[markSt] = studentsFromTheList[`st${markSt+1}`]
+                    } else {                                                                                            //и пустые значения для отсутствующих
+                        presentStudents[markSt] = '';
+                      }                       
+                      visitReport[taskFiveGroup.value + ' ' + taskFiveLesson.value] = presentStudents;           //вставляем в группу студентов  
+                }; 
+                console.log(visitReport);               
+            })
+               
+                taskFiveBtnPresent.addEventListener('click', (event) => {                                             //вывод истории посещений                                   
+                    let past = document.createElement('div');                                                   //список присутствующих
+                    let pastClassAttendance = '<div style="display: flex"><div class="studentName">Name</div><div class="studentCheckbox">is present</div></div><hr class="dashed">';
+                    let goodStudentGroup = visitReport[taskFiveGroup.value + ' ' + taskFiveLesson.value];   //находим выбранную группу
+                    console.log(goodStudentGroup);
+                        for(let studentInAGroup = 1; studentInAGroup <= visitReport[taskFiveGroup.value + ' ' + taskFiveLesson.value].length; studentInAGroup++){
+                            let oneOfTheGroup = groupInWhichTheLessonIsGiven[`st${studentInAGroup}`];
+                            let goodStudent;
+                            if (goodStudentGroup[studentInAGroup-1] != ''){
+                                goodStudent = 'present'
+                            } else {
+                                goodStudent = ''
+                            }
+                            pastClassAttendance = pastClassAttendance + 
+                                            `<div style="display: flex"><div class="studentName">${oneOfTheGroup}</div>
+                                            <div class="studentCheckbox"><p>${goodStudent}</p>
+                                            </div></div><hr class="dashed">`;
+                                            
+                        }
+                    past.innerHTML = pastClassAttendance;
+                    studentsList.append(past);
+                })                
+        })
+
+
+    
+</script>
+
+
+<h3>
+    <!-- <p style="color: red;">недоделан</p>  -->
+    Задание 6 <br>
+Создать html-страницу с возможностью забронировать билеты
+на поезд. Для начала пользователь выбирает направление поезда
+и дату поездки, дальше отмечает места для брони. Также добавить
+возможность посмотреть уже забронированные билеты. Хранить
+информацию в заранее подготовленных массивах.
+</h3>
+<div>
+    <form id="taskSixForm">
+        <div id="taskSixChildDiv1">
+            <label for="taskSixDirection">Direction:</label>
+            <select name="selectTaskSix" id="taskSixDirection">
+                <option value="">select direction</option>
+            </select>
+        </div>
+        <div id="taskSixChildDiv2">
+            <label for="taskSixDate">Date:</label>
+            <input type="date" id="taskSixDate" name="inputTaskSix">
+        </select>
+        </div>
+        <input type="submit" id="taskSixBtn" value="Search">
+    </form>
+    <hr>
+</div>
+<div id="taskSixDiv"></div>
+
+<script>
+   let routeArray = [                   //массив маршрутов
+       'Odessa - Lviv',
+       'Lviv - Odessa',
+   ];
+   
+   let purchasedTickets = {};                                  //обьект для хранения инфо о купленых билета
+   let routeSelectionForTheDate = {};                          //обьект для хранения инфо о выбраном маршруте
+   let parentDivTaskSix = document.getElementById('taskSixDiv');                //находим родительский div
+   let directionCounter = 0;                                                    //счетчик
+   const selectDirection = document.getElementById('taskSixDirection');         //находим select для direction
+   const choiceDate = document.getElementById('taskSixDate');                   //находим date
+   routeArray.forEach(element => {       
+        directionCounter = directionCounter + 1;                                //находим сколько групп есть в массиве обьектов(маршрут)
+        let optionDirection = document.createElement('option');                 //добавляем в select группы
+        optionDirection.value = routeArray[directionCounter-1];
+        optionDirection.textContent = routeArray[directionCounter-1];
+        selectDirection.append(optionDirection);       
+    });
+
+    const ticketSelection = document.getElementById('taskSixForm');             //находим форму по id
+    
+    ticketSelection.addEventListener('submit', (event) => {
+        event.preventDefault();
+        if((selectDirection.value != '') && ((Date.parse(choiceDate.value) / 86400000) >= (Math.floor(Date.now() / 86400000)))){ //проверим что форма заполнена правильно
+            parentDivTaskSix.innerHTML = '';                                //удаляем все содержимое родителя
+            let trainTicketChoice = document.createElement('form');         //создаем новую форму
+            trainTicketChoice.id = 'taskSixFormAdded';
+            parentDivTaskSix.append(trainTicketChoice);                     //добавляем ее к родительскому div
+                
+            let train = document.createElement('div');                      //созаем поезд
+            train.classList.add('train');                                   //добавляем класс поезду
+            let coupeNumber = 1;                                            //счетчик для id купе
+            for (let coupe = 1; coupe < 8; coupe++){                        //создаем 7 купе
+                let coupeInTrain = document.createElement('div');         
+                coupeInTrain.innerHTML = `<div class="coupe4">
+                                            <div class="coupe">
+                                                <input type="checkbox" id='place${coupeNumber}' name='place${coupeNumber}' class="place">
+                                                <label for="${coupeNumber}">${coupeNumber}</label>
+                                            </div>
+                                            <div class="coupe">
+                                                <input type="checkbox" id='place${coupeNumber + 1}' name='place${coupeNumber + 1}' class="place">
+                                                <label for="${coupeNumber + 1}">${coupeNumber + 1}</label>
+                                            </div>
+                                            </div>
+                                        <div class="coupe4">
+                                            <div class="coupe">
+                                                <input type="checkbox" id='place${coupeNumber + 2}' name='place${coupeNumber + 2}' class="place">
+                                                <label for="${coupeNumber + 2}">${coupeNumber + 2}</label>
+                                            </div>
+                                            <div class="coupe">
+                                                <input type="checkbox" id='place${coupeNumber + 3}' name='place${coupeNumber + 3}' class="place">
+                                                <label for="${coupeNumber + 3}">${coupeNumber + 3}</label>
+                                            </div>
+                                        </div>`;
+                coupeNumber = coupeNumber + 4;
+                train.append(coupeInTrain);
+            }
+
+            let priсe = document.createElement('div');                      //создаем новый div
+            priсe.classList.add('priсe');                                   //добавляем класс для цены
+            priсe.innerHTML = `<p id="displayPrice"><b>Total price:</b> цена </p><input type="submit" id="buyATicketTaskSix" value="Book">`
+            trainTicketChoice.append(train);
+            trainTicketChoice.append(priсe);
+            
+
+            let dateKey = Date.parse(choiceDate.value) / 86400000;      //ключ по дате
+                for (let checkIndex = 0; checkIndex <28; checkIndex++) {                        //делаем уже купленные билеты чтобы нельзя было выбрать для покупки
+                    if (purchasedTickets[`${dateKey}`] != undefined){
+                        if (purchasedTickets[`${dateKey}`][`${selectDirection.value.replace(/[- ]/g,'')}`] != undefined) { 
+                            if (purchasedTickets[`${dateKey}`][`${selectDirection.value.replace(/[- ]/g,'')}`][checkIndex] == 'sold') {   
+                                trainTicketChoice[`place${checkIndex + 1}`].checked = true;
+                                trainTicketChoice[`place${checkIndex + 1}`].disabled = true;
+                            } else continue;                    
+                        }else continue;
+                    }else continue;
+                }
+            trainTicketChoice.addEventListener('submit', (event) => {       //нажимаем купить 
+                event.preventDefault();
+                let ticketsArr = [];                                        //массив для хранения купленых билетов
+                // let dateKey = Date.parse(choiceDate.value) / 86400000;      //ключ по дате
+                let allPlaces = document.querySelectorAll('.place');        //находим все checkbox 
+                const prise = 62;                                           //цена 1 билета
+                let count = 0;                                              //счеетчик билетов  
+                let myTickets = [];                                         //массив храняший билеты пользователя
+                function writeDownTheValue() {                              //проходим по каждому checkbox
+                    for(let arrayIndex = 0; arrayIndex < 28; arrayIndex++) {
+                        if (allPlaces[arrayIndex].checked) {                //если они зачеканы,
+                            ticketsArr[arrayIndex] = 'sold';                //пишем 'продано'
+                            if (allPlaces[arrayIndex].disabled != true) {  //если они не disabled, 
+                                myTickets[count] = arrayIndex + 1           //узнаем номер выбранного билета
+                                count = count + 1;                          //мы их считаем 
+                            } 
+                        } else {
+                            ticketsArr[arrayIndex] = '';                    //иначе ''
+                        }
+                    }                                      
+                }
+                console.log(myTickets);
+                
+                
+                routeSelectionForTheDate[`${selectDirection.value.replace(/[- ]/g,'')}`] = ticketsArr;
+                purchasedTickets[`${dateKey}`] = routeSelectionForTheDate;
+                
+                writeDownTheValue();
+                console.log(purchasedTickets);
+                console.log(purchasedTickets[`${dateKey}`][`${selectDirection.value.replace(/[- ]/g,'')}`][0]);
+                let dataOutput = "<h3>My tiskets</h3><table class='myTickets'><tr><td>Direction</td><td>Date</td><td>Seat</td></tr>"
+                    for (IBoughtTickets = 0; IBoughtTickets < count; IBoughtTickets++) {
+                        dataOutput = dataOutput + `<tr><td>${selectDirection.value}</td><td>${choiceDate.value}</td><td>${myTickets[IBoughtTickets]}</td></tr>`
+                 }            
+                 dataOutput = dataOutput + '</table>' 
+                 let yourTicket = document.createElement('div');
+                 yourTicket.innerHTML = dataOutput;
+                 trainTicketChoice.append(yourTicket);
+            })
+
+
+
+
+
+
+        
+
+        } else {                                                            //если не заполнены формы, то не пропускаем форму
+            if(selectDirection.value == '') {
+                selectDirection.style.backgroundColor = 'red';
+                ticketSelection.selectTaskSix.addEventListener('focus', (event) => {
+                    ticketSelection.selectTaskSix.style.backgroundColor = '#fff';
+                });
+            }
+            if(choiceDate.value == '') {
+                choiceDate.style.backgroundColor = 'red';
+                ticketSelection.inputTaskSix.addEventListener('focus', (event) => {
+                    ticketSelection.inputTaskSix.style.backgroundColor = '#fff';
+                });
+            }
+            if((Date.parse(choiceDate.value) / 86400000) < (Math.floor(Date.now() / 86400000))) {
+                alert('введите правильную дату')
+            }
+        }
+       
+    })
+
+      
+             
+    
+      
+
+
+
+
+
+
+
+    
+    
+</script>
+
+
+
+</body>
+</html>

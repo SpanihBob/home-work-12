@@ -1,0 +1,259 @@
+body{
+    background-color: rgb(231, 209, 230);
+}
+/* 1 задание */
+#taskOneForm{                       /* форма */
+    border: 2px solid;
+    margin: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 5px;
+    border-radius: 5px;
+}
+.dateAndName{                       /* div с датой и именем */
+    display: flex;
+    justify-content: space-between;
+    margin: 10px;
+}
+.publicationDate{                   /* дата */
+    justify-content: space-between;
+}
+.newMessage{                        /* новое сообщение */
+    border: 2px solid;
+    margin: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+}
+.messageEntry{                      /* введенное сообщение */
+    margin: 10px;
+}
+hr{                                 
+    border: .5px solid;
+}
+.taskOneLabel{                      
+    display: flex;
+}
+.taskOneP{                          
+    width: 15%;
+    padding-left: 20px;
+}
+#taskOneInput, #taskOnetext{        
+    width: 85% ;
+}
+#taskOneSubmit{                     /* кнопка */
+    width: 100%;
+    background-color: rgb(100, 100, 107);
+    color: white;
+    font-weight: 600;
+    border-radius: 5px;
+}
+.taskOneH4{                         /* заголовок */
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+#temporaryStorageText, #temporaryStorageTextarea{
+    display: none;
+}
+/* 2 задание */
+.taskTwoButton{
+    width: 100px;
+    height: 30px;
+}
+/* 3 задание */
+.taskThreeLabel{
+    font-weight: 600;
+}
+#taskThreeTextarea{
+    display: block;
+    width: 500px;
+    height: 300px;
+    background-color: white;
+    margin: 0;
+    padding: 10px;
+    border: .5px solid black;
+}
+#taskThreeInput{
+    width: 500px;
+    height: 300px;
+    background-color: white;
+    margin: 0;
+    padding: 10px;
+    border: .5px solid black;
+    word-wrap: break-word;
+    display: none;
+}
+#taskThreeButton{
+    width: 522px;
+    height: 50px;
+    margin-top: 5px;
+    font-size: 150%;
+    font-weight: 600;
+    background-color: rgb(128, 128, 141);
+    color: rgb(226, 222, 222);
+}
+/* 4 задание */
+.product{
+    width: 260px;
+    border: solid 1px black;
+    border-radius: 5px;
+    margin: 5px;
+}
+.taskFourImg{
+    width: 240px;
+    height: 350px;
+}
+#bookList{
+    display: flex;
+}
+.taskFourFigure{
+    margin: 8px;
+}
+.taskFourFigcaption{
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.taskFourSelect{
+    width: 235px;
+    height: 40px;
+    font-weight: 600;
+}
+.taskFourH3{
+    display: block;
+    height: 90px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.taskFourPrice{
+    text-align: right;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+.taskFourAuthor{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+#bookAndForm{
+    display: flex;
+}
+#taskFourDivResult{
+    width: 1400px;
+    padding: 5px;
+    border: solid black 1px;
+    margin: 5px;
+    font-weight: 140%;
+}
+#buyerData{
+    padding: 20px;
+    margin: 5px;
+    display: flex;
+    flex-flow: column;
+    border: black solid 1px;
+    border-radius: 5px;   
+}
+#selectedProduct,
+#quantityOfGoods,
+#buyerName,
+#deliveryAddress,
+#deliveryDate,
+#buyerComment{
+    width:100%;
+    justify-content: flex-end;
+}
+.inputContainer{
+    display: grid;
+    grid-template-columns: 150px 400px;
+    padding: 5px;
+}
+#taskFourSubmit{
+    height: 40px;
+    font-size: 140%;
+    font-weight: 600;
+    margin-top: 10px;
+}
+/* задание 5 */
+#taskFiveForm{
+    display: flex;
+}
+#taskFiveChildDiv1, #taskFiveChildDiv2, #taskFiveBtn{
+    margin: 5px;
+}
+#taskFiveLesson, #taskFiveGroup, #taskFiveBtn{
+    width: 200px;
+    height: 40px;
+    padding: 2px;
+}
+.studentName{
+    width: 400px;
+}
+.studentCheckbox{
+    width: 600px;
+
+}
+.dashed{
+    border: none;
+    border-bottom: 1px dashed black;
+}
+/* задание 6 */
+#taskSixForm{
+    display: flex;
+}
+#taskSixChildDiv1, #taskSixChildDiv2, #taskSixBtn{
+    margin: 5px;
+}
+#taskSixDirection, #taskSixBtn{
+    width: 200px;
+    height: 40px;
+    padding: 2px;
+}
+#taskSixDate{
+    width: 200px;
+    height: 32px;
+    padding: 2px;
+}
+.train{
+    display: flex;
+    border: solid 1px;
+    border-radius: 2px;
+    padding: 3px;
+    width: 770px;
+}
+.coupe4{
+    display: flex; 
+    border: solid 1px;
+    
+    
+}
+.coupe{
+    border: solid 1px;
+    padding: 1px;
+    width: 50px;
+    height: 25px;
+}
+.priсe{
+    justify-content:flex-end;
+    width: 770px;
+    display: flex;
+    margin-top: 10px;
+}
+#displayPrice{
+    padding-right: 10px;
+}
+#buyATicketTaskSix{
+    width: 200px;
+    height: 40px;
+}
+.myTickets{
+    border-spacing: 0 10px;
+font-family: 'Open Sans', sans-serif;
+font-weight: bold;
+}
+td {
+    vertical-align: middle;
+    padding: 10px;
+    font-size: 14px;
+    text-align: center;
+    border: 2px solid black;
+}
